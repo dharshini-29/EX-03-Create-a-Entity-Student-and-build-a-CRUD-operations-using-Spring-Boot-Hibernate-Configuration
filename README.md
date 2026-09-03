@@ -38,9 +38,10 @@ PUT /students/{id} → Update student
 
 DELETE /students/{id} → Delete student
 
-##PROGRAM CODE
+## PROGRAM CODE
 
 ### pom.xml
+```
 <dependencies>
     <!-- Spring Boot Web -->
     <dependency>
@@ -69,99 +70,123 @@ spring.datasource.username=sa
 spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=update
 spring.h2.console.enabled=true
+```
 ### Student.java
-package com.example.demo.model;
+```
+package com.example.exp3.model;
+
 import jakarta.persistence.*;
+
 @Entity
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String name;
-    private String department;
     private int age;
-    // Getters and Setters
-    public Long getId() { return id; }
 
+    // Constructors
+    public Student() {}
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters & Setters
+    public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
-
     public void setName(String name) { this.name = name; }
 
-    public String getDepartment() { return department; }
-
-    public void setDepartment(String department) { this.department = department; }
-
     public int getAge() { return age; }
-
     public void setAge(int age) { this.age = age; }
 }
-### StudentRepository.java
-package com.example.demo.repository;
 
-import com.example.demo.model.Student;
+}
+```
+### StudentRepository.java
+```
+package com.example.exp3.repository;
+
+import com.example.exp3.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
 }
-### StudentController.java
-package com.example.demo.controller;
 
-import com.example.demo.model.Student;
-import com.example.demo.repository.StudentRepository;
+```
+### StudentController.java
+```
+package com.example.exp3.Controller;
+
+import com.example.exp3.model.Student;
+import com.example.exp3.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
-
     @Autowired
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
-    @PostMapping
-    public Student addStudent(@RequestBody Student student) {
-        return studentRepository.save(student);
+    public StudentController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
+    // Get all students
     @GetMapping
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Student> getStudent(@PathVariable Long id) {
-        return studentRepository.findById(id);
-    }
-
-    @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable Long id, @RequestBody Student studentDetails) {
-        Student student = studentRepository.findById(id).orElseThrow();
-        student.setName(studentDetails.getName());
-        student.setAge(studentDetails.getAge());
-        student.setDepartment(studentDetails.getDepartment());
+    // Add new student
+    @PostMapping
+    public Student addStudent(@RequestBody Student student) {
         return studentRepository.save(student);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteStudent(@PathVariable Long id) {
-        studentRepository.deleteById(id);
-        return "Student with ID " + id + " deleted successfully!";
+    // Get single student
+    @GetMapping("/{id}")
+    public Student getStudentById(@PathVariable Long id) {
+        return studentRepository.findById(id).orElse(null);
     }
+//    @PutMapping("/{id}")
+//    public Student studentUpadte(@PathVariable Long id,@RequestBody Student studentDetails)
+//    {
+//
+//    }
+//
+
 }
+
+```
 ### DemoApplication.java
-package com.example.demo;
+```
+package com.example.exp3;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class Exp3Application {
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(Exp3Application.class, args);
     }
 }
+
+```
+
+## OUTPUT
+
+<img width="1115" height="631" alt="image" src="https://github.com/user-attachments/assets/47782900-02d9-4914-aae3-75242cd98045" />
+
+
+## RESULT
+Hence the Crud operations have been implemented successully
+
