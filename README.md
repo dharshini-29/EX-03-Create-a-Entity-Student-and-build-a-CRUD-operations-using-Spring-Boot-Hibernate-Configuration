@@ -184,7 +184,8 @@ public class Exp3Application {
 
 ## OUTPUT
 
-<img width="1115" height="631" alt="image" src="https://github.com/user-attachments/assets/47782900-02d9-4914-aae3-75242cd98045" />
+<img width="1592" height="898" alt="image" src="https://github.com/user-attachments/assets/a8d3d1e1-c659-4555-aa8d-7aee67937072" />
+
 
 
 ## RESULT
